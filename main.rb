@@ -1,8 +1,7 @@
 require 'sinatra'
-require 'rack-flash'
+require 'sinatra/flash'
 
 enable :sessions
-use Rack::Flash, :sweep => true
 
 SITE_TITLE = "Secret Number"
 SITE_DESCRIPTION = "Sinatra's favorite game"
