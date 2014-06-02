@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">Hi <%= @player %>!  Thanks for playing the Secret Number.  Let's go over the rules before we play.</h4>
+  </div>
+  <div class="panel-body">
+    <ul class="list-unstyled">
+      <li>I have chosen a secret number that is between 1 and 10.</li>
+      <li>Your goal is to guess the secret number within 3 guesses.</li>
+    </ul>
+  </div>
+</div>
+<h4>Simple, right - ready to play?</h4>
+<form action="/game" method="get">
+  <button type="submit" class="btn btn-info">Ready!</button>
+</form>
+
+

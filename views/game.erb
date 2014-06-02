@@ -1,0 +1,23 @@
+<p> Wins: <%= @@wins %> | Losses: <%= @@losses %></p>
+<% if @@guesses > 0 %>
+  <h4>Guesses left: <%= @@guesses %></h4>
+  <h5>Enter a number between 1 and 10.</h5>
+  <form action="/game" method="post">
+     <div class="row">
+        <div class="col-lg-5">
+          <div class="input-group">
+            <input type="number" name="guess" class="form-control">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">Go!</button>
+            </span>
+          </div><!-- /input-group -->    
+        </div><!-- /.col-lg-5 -->
+      </div><!-- /.row -->
+  </form>
+<% else %>
+  <h4>Play again?</h4>
+    <form action="/game" method="get">
+      <button type="submit" class="btn btn-info">Yes</button>
+    </form>
+  <h5>You don't?  Well, in the mean time check out <a href="http://generalassemb.ly">General Assembly</a>.</h5>
+<% end %>
