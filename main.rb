@@ -2,8 +2,10 @@
 
 require 'sinatra'
 require 'sinatra/flash'
+require 'sinatra/redirect_with_flash'
 
 enable :sessions
+helpers Sinatra::RedirectWithFlash
 
 SITE_TITLE = "Secret Number"
 SITE_DESCRIPTION = "Sinatra's favorite game"
@@ -23,6 +25,10 @@ post '/' do
   @player = params[:name]
   @@wins = 0
   @@losses = 0
+  if @player.empty?
+    #redirect '/', :danger => 'My mom said not to play with strangers.  Please enter your name.'
+    redirect '/', :flash => {:danger => 'My mom said not to play with strangers.  Please enter your name.'} 
+  end
   erb :instructions
 end
 
