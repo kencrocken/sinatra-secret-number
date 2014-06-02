@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'rack-flash'
-require 'sinatra/redirect_with_flash'
 
 enable :sessions
 use Rack::Flash, :sweep => true
@@ -8,7 +7,6 @@ use Rack::Flash, :sweep => true
 SITE_TITLE = "Secret Number"
 SITE_DESCRIPTION = "Sinatra's favorite game"
 
-helpers Sinatra::RedirectWithFlash
 
 def secret_number
     number = (1..10).to_a
