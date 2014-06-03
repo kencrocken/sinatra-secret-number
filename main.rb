@@ -22,10 +22,10 @@ get '/' do
 end
 
 post '/' do
-  @player = params[:name]
+  @@player = params[:name]
   @@wins = 0
   @@losses = 0
-  if @player.empty?
+  if @@player.empty?
     #redirect '/', :danger => 'My mom said not to play with strangers.  Please enter your name.'
     redirect '/', :flash => {:danger => 'My mom said not to play with strangers.  Please enter your name.'} 
   end
@@ -35,7 +35,6 @@ end
 get '/game' do
   @@secret_number = secret_number
   @@guesses = 3
-  @@players_guess = []
   erb :game
 end
 
@@ -50,15 +49,15 @@ post '/game' do
     flash.now[:danger] = 'Please pick a number between 1 and 10. You may keep your guess. (Your welcome)'
   else
     if @guess == @@secret_number
-      flash.now[:success] = "Winner! Winner! Congrats you guessed the Secret Number, #{@@secret_number}.  Well played!"
+      flash.now[:success] = "Winner! Winner! Congrats #{@@player}! You guessed the Secret Number, #{@@secret_number}.  Well played!"
       @@wins += 1
       @@guesses = 0
     elsif @guess < @@secret_number && @@guesses > 0
-      flash.now[:warning] = "Nope, #{@guess} is not the Secret Number. Guess higher!"
+      flash.now[:warning] = "Nope, #{@guess} is not the Secret Number, #{@@player}. Guess higher!"
     elsif @guess > @@secret_number && @@guesses > 0  
-      flash.now[:info] = "Sorry, #{@guess} is wrong. Guess lower!"
+      flash.now[:info] = "Sorry #{@@player}, #{@guess} is wrong. Guess lower!"
     else
-      flash.now[:danger] = "You are out of guesses.  You lose.  The Secret Number was #{@@secret_number}."
+      flash.now[:danger] = "You are out of guesses.  You lose, #{@@player}.  The Secret Number was #{@@secret_number}."
       @@losses += 1
     end
   end
