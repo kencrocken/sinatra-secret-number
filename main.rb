@@ -16,6 +16,32 @@ def secret_number
     number = number.sample
 end
 
+def check_name(player_name)
+  if player_name.empty?
+    redirect '/', :flash => {:danger => 'My mom said not to play with strangers.  Please enter your name.'} 
+  end
+end
+
+def check_number(guess)
+  check = (1..10).to_a
+  if !check.include?(guess)
+    @@guesses += 1
+    flash.now[:danger] = 'Please pick a number between 1 and 10. You may keep your guess. (Your welcome)'
+  else
+    if guess == @@secret_number
+      flash.now[:success] = "Winner! Winner! Congrats #{@@player}! You guessed the Secret Number, #{@@secret_number}.  Well played!"
+      @@wins += 1
+      @@guesses = 0
+    elsif guess < @@secret_number && @@guesses > 0
+      flash.now[:warning] = "Nope. #{@guess} is not the Secret Number, #{@@player}. Guess higher!"
+    elsif guess > @@secret_number && @@guesses > 0  
+      flash.now[:info] = "Sorry #{@@player}, #{@guess} is wrong. Guess lower!"
+    else
+      flash.now[:danger] = "You are out of guesses.  You lose, #{@@player}.  The Secret Number was #{@@secret_number}."
+      @@losses += 1
+    end
+  end
+end
 
 get '/' do
   erb :game_start
@@ -25,10 +51,7 @@ post '/' do
   @@player = params[:name]
   @@wins = 0
   @@losses = 0
-  if @@player.empty?
-    #redirect '/', :danger => 'My mom said not to play with strangers.  Please enter your name.'
-    redirect '/', :flash => {:danger => 'My mom said not to play with strangers.  Please enter your name.'} 
-  end
+  check_name(@@player)
   erb :instructions
 end
 
@@ -39,28 +62,8 @@ get '/game' do
 end
 
 post '/game' do
-  
   @@guesses -= 1
   @guess = params[:guess].to_i
-  check = (1..10).to_a
-
-  if !check.include?(@guess)
-    @@guesses += 1
-    flash.now[:danger] = 'Please pick a number between 1 and 10. You may keep your guess. (Your welcome)'
-  else
-    if @guess == @@secret_number
-      flash.now[:success] = "Winner! Winner! Congrats #{@@player}! You guessed the Secret Number, #{@@secret_number}.  Well played!"
-      @@wins += 1
-      @@guesses = 0
-    elsif @guess < @@secret_number && @@guesses > 0
-      flash.now[:warning] = "Nope, #{@guess} is not the Secret Number, #{@@player}. Guess higher!"
-    elsif @guess > @@secret_number && @@guesses > 0  
-      flash.now[:info] = "Sorry #{@@player}, #{@guess} is wrong. Guess lower!"
-    else
-      flash.now[:danger] = "You are out of guesses.  You lose, #{@@player}.  The Secret Number was #{@@secret_number}."
-      @@losses += 1
-    end
-  end
-
+  check_number(@guess)
   erb :game
 end
