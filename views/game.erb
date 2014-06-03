@@ -1,5 +1,10 @@
 <p> Wins: <%= @@wins %> | Losses: <%= @@losses %></p>
 <% if @@guesses > 0 %>
+  <% if !@@players_guess.empty? %>
+    <% @@players_guess.each do |x| %>
+    <p>Pervious guess: <%= x[:value] %> | Hint: <%= x[:key] %></p>
+    <% end %>
+  <% end %>
   <h4>Guesses left: <%= @@guesses %></h4>
   <h5>Enter a number between 1 and 10.</h5>
   <form action="/game" method="post">

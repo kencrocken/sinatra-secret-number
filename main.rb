@@ -35,11 +35,12 @@ end
 get '/game' do
   @@secret_number = secret_number
   @@guesses = 3
-  @@won = false
+  @@players_guess = []
   erb :game
 end
 
 post '/game' do
+  
   @@guesses -= 1
   @guess = params[:guess].to_i
   check = (1..10).to_a
@@ -49,13 +50,13 @@ post '/game' do
     flash.now[:danger] = 'Please pick a number between 1 and 10. You may keep your guess. (Your welcome)'
   else
     if @guess == @@secret_number
-      flash.now[:success] = "Winner! Winner! Congrats you guessed the Secret Number.  Well played!"
+      flash.now[:success] = "Winner! Winner! Congrats you guessed the Secret Number, #{@@secret_number}.  Well played!"
       @@wins += 1
       @@guesses = 0
     elsif @guess < @@secret_number && @@guesses > 0
-      flash.now[:warning] = 'Nope, that\'s not the Secret Number. Guess higher!'
-    elsif @guess > @@secret_number && @@guesses > 0
-      flash.now[:info] = 'Sorry, you guessed wrong. Guess lower!'
+      flash.now[:warning] = "Nope, #{@guess} is not the Secret Number. Guess higher!"
+    elsif @guess > @@secret_number && @@guesses > 0  
+      flash.now[:info] = "Sorry, #{@guess} is wrong. Guess lower!"
     else
       flash.now[:danger] = "You are out of guesses.  You lose.  The Secret Number was #{@@secret_number}."
       @@losses += 1
