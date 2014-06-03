@@ -58,12 +58,14 @@ end
 get '/game' do
   @@secret_number = secret_number
   @@guesses = 3
+  @@players_guess = []
   erb :game
 end
 
 post '/game' do
   @@guesses -= 1
   @guess = params[:guess].to_i
+  @@players_guess << @guess
   check_number(@guess)
   erb :game
 end
