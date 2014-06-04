@@ -29,15 +29,17 @@ def check_number(guess)
     flash.now[:danger] = 'Please pick a number between 1 and 10. You may keep your guess. (Your welcome)'
   else
     if guess == @@secret_number
-      flash.now[:success] = "Winner! Winner! Congrats #{@@player}! You guessed the Secret Number, #{@@secret_number}.  Well played!"
+      flash.now[:success] = "<i class='fa fa-thumbs-o-up'></i> Winner! Winner! Congrats #{@@player}! You guessed the Secret Number, #{@@secret_number}.  Well played!"
       @@wins += 1
       @@guesses = 0
     elsif guess < @@secret_number && @@guesses > 0
-      flash.now[:warning] = "Nope. #{@guess} is not the Secret Number, #{@@player}. Guess higher!"
+      flash.now[:warning] = "<i class='fa fa-frown-o'></i> Nope. #{@guess} is not the Secret Number, #{@@player}. Guess higher!"
+      @@players_guess[:Higher] = @guess
     elsif guess > @@secret_number && @@guesses > 0  
-      flash.now[:info] = "Sorry #{@@player}, #{@guess} is wrong. Guess lower!"
+      flash.now[:info] = "<i class='fa fa-frown-o'></i> Sorry #{@@player}, #{@guess} is wrong. Guess lower!"
+      @@players_guess[:Lower] = @guess
     else
-      flash.now[:danger] = "You are out of guesses.  You lose, #{@@player}.  The Secret Number was #{@@secret_number}."
+      flash.now[:danger] = "<i class='fa fa-thumbs-o-down'></i> You are out of guesses. You have failed, #{@@player}.  The Secret Number was #{@@secret_number}."
       @@losses += 1
     end
   end
@@ -58,14 +60,13 @@ end
 get '/game' do
   @@secret_number = secret_number
   @@guesses = 3
-  @@players_guess = []
+  @@players_guess = Hash.new
   erb :game
 end
 
 post '/game' do
   @@guesses -= 1
   @guess = params[:guess].to_i
-  @@players_guess << @guess
   check_number(@guess)
   erb :game
 end

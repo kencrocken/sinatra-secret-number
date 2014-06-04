@@ -15,9 +15,9 @@
       </div><!-- /.row -->
   </form>
   <% if !@@players_guess.empty? %>
-    <% @@players_guess.each do |x| %>
+    <% @@players_guess.each do |key,value| %>
     <ul class = "list-unstyled">
-      <li class = "text-muted small"> Your previous guess was: <%= x %></li>
+      <li class = "text-muted small"> Your previous guess was: <%= value %> | Hint was: <%= key %></li>
     </ul>
     <% end %>
   <% end %>
