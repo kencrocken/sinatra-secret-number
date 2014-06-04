@@ -14,13 +14,6 @@
         </div><!-- /.col-lg-5 -->
       </div><!-- /.row -->
   </form>
-  <% if !@@players_guess.empty? %>
-    <% @@players_guess.each do |key,value| %>
-    <ul class = "list-unstyled">
-      <li class = "text-muted small"> Your previous guess was: <%= value %> | Hint was: <%= key %></li>
-    </ul>
-    <% end %>
-  <% end %>
 <% else %>
   <h4>Play again?</h4>
     <form action="/game" method="get">
